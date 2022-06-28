@@ -49,15 +49,30 @@ class PlivoChannel
         if (is_string($message)) {
             $message = new PlivoMessage($message);
         }
+        
+        if(method_exists($notifiable, 'optionalArgumentsForNotification')){
+             /** @var MessageCreateResponse $response */
+            $response = $this->plivo->messages->create(
+                $message->from ?: $this->from,
+                [$to],
+                trim($message->content),
+                $notifiable->optionalArgumentsForNotification() ?? [],
+                null
+            );
+        }
+        else{
+             /** @var MessageCreateResponse $response */
+            $response = $this->plivo->messages->create(
+                $message->from ?: $this->from,
+                [$to],
+                trim($message->content),
+                [],
+                null
+            );
+            
+        }
 
-        /** @var MessageCreateResponse $response */
-        $response = $this->plivo->messages->create(
-            $message->from ?: $this->from,
-            [$to],
-            trim($message->content),
-            $notifiable->optionalArgumentsForNotification() ?? [],
-            null
-        );
+       
 
         if ($response->statusCode !== 202) {
             throw CouldNotSendNotification::serviceRespondedWithAnError($response);

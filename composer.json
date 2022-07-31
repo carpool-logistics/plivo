@@ -20,7 +20,7 @@
         "php": ">=7.2",
         "illuminate/events": "8.45 - 9",
         "illuminate/notifications": "8.45 - 9",
-        "illuminate/support": "8.45 - 9"
+        "illuminate/support": "8.45 - 9",
         "plivo/plivo-php": "^4.23"
     },
     "require-dev": {
